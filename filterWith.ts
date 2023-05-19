@@ -1,3 +1,21 @@
+const example = {
+  _id: "5e985a07feddae7617ac44f6",
+  age: 24,
+  eyeColor: "brown",
+  name: "Cummings Baxter",
+  gender: "male",
+  company: "VELOS",
+  email: "cummingsbaxter@velos.com",
+  phone: "+1 (907) 482-2451",
+  tags: ["labore", "elit", "excepteur", "nisi", "mollit", "anim", "aliquip"],
+  friends: [
+    {
+      id: 0,
+      name: "Sheppard Jensen",
+    },
+  ],
+};
+
 const data = [
   {
     _id: "5e985a07feddae7617ac44f6",
@@ -134,24 +152,43 @@ const data = [
   },
 ];
 
-const filterWith = (arr: object, phrase: string | number) => {
+const filterWith = (obj: Object, phrase: string | number) => {
   if (String(phrase).length <= 2) {
     return [];
   }
-  isPhraseWithNumbersOrLettersOnly(phrase);
+  const asArray = Object.entries(obj);
+  return asArray.filter(([key, value]) => filter(value, phrase));
 };
 
-const isPhraseWithNumbersOrLettersOnly = (phrase: string | number) => {
-  if (/^[\w\d\s]+$/.test(String(phrase)) !== true) {
-    throw new Error("Please type phrase without special characters");
+const filter = <T>(
+  Obj: { [key: string | number]: string },
+  phrase: T
+): object | undefined => {
+  const phraseToString = String(phrase);
+  const phraseToRegExp = new RegExp(phraseToString);
+  const objectKeys = Object.keys(Obj);
+  const objectValues = Object.values(Obj);
+  for (let i = 0; i < objectValues.length; i++) {
+    if (typeof Obj[objectKeys[i]] !== "object") {
+      if (phraseToRegExp.test(Obj[objectKeys[i]])) {
+        return Obj;
+      }
+    }
+    if (typeof Obj[objectKeys[i]] === "object") {
+      if (filter(Obj[objectKeys[i]], phrase)) {
+        return Obj;
+      }
+    }
   }
 };
 
-const result1 = filterWith(data, "Cu");
-console.log(result1);
+// console.log(filter(example, "Sheppard"));
+console.log(filterWith(data, "Luan"));
+// const result1 = filterWith(data, "Cu");
+// console.log(result1);
 
-const result2 = filterWith(data, "nisi");
-console.log(result2);
+// const result2 = filterWith(data, "nisi");
+// console.log(result2);
 
-const result3 = filterWith(data, "Delacruz Acevedo");
-console.log(result3);
+// const result3 = filterWith(data, "Delacruz Acevedo");
+// console.log(result3);
