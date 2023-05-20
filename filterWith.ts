@@ -1,13 +1,13 @@
 import { data, dataInterface } from "./data";
 
-const filterWith = (obj: any[], phrase: string | number) => {
+const filterWith = (obj: dataInterface[], phrase: string | number) => {
   if (String(phrase).length <= 2) {
     return [];
   }
   return obj.filter((value) => filterObject(value, phrase));
 };
 
-const filterObject = <T>(Obj: any, phrase: T): boolean => {
+const filterObject = <T>(Obj: dataInterface, phrase: T): boolean => {
   const phraseToString = String(phrase);
   const phraseToRegExp = new RegExp(phraseToString);
   const objectKeys = Object.keys(Obj);
