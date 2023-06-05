@@ -25,6 +25,27 @@ const filterObject = (Obj: dataInterface, phrase: string): boolean => {
   return false;
 };
 
+const filterWith2 = (obj: dataInterface[], phrase: string | number) => {
+  const phraseToString = phrase.toString();
+  if (phraseToString.length <= 2) {
+    return [];
+  }
+  return obj.filter((value) => someObject(value, phraseToString));
+};
+
+const someObject = (Obj: Object, phrase: string): boolean => {
+  const objectValues = Object.values(Obj);
+  const phraseToRegExp = new RegExp(phrase);
+  return objectValues.some((element) => {
+    if (typeof element !== "object") {
+      return phraseToRegExp.test(element);
+    }
+    return someObject(element, phrase);
+  });
+};
+
+console.log(filterWith2(data, "brown"));
+
 const result1 = filterWith(data, "Sheppard");
 console.log(result1);
 
